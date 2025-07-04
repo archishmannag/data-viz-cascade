@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import KPICard from './KPICard';
 import ChartRenderer from './ChartRenderer';
 import DataTable from './DataTable';
+import OptimizationSuggestions from './OptimizationSuggestions';
+import InsightsSection from './InsightsSection';
 
 interface DashboardProps {
   dashboardData: {
@@ -42,6 +44,37 @@ interface DashboardProps {
       pagination: boolean;
       sortable: boolean;
     }>;
+    optimizationSuggestions?: Array<{
+      id: string;
+      title: string;
+      category: 'cost' | 'efficiency' | 'performance' | 'risk' | 'quality';
+      impact: 'high' | 'medium' | 'low';
+      savings: {
+        value: number;
+        unit: string;
+        percentage: string;
+        timeframe: string;
+      };
+      description: string;
+      implementation: string;
+      metrics: string[];
+      priority: 'high' | 'medium' | 'low';
+      confidence: 'high' | 'medium' | 'low';
+      tags: string[];
+      actionable: boolean;
+      color: string;
+    }>;
+    insights?: {
+      summary: string;
+      trends: string[];
+      alerts: Array<{
+        type: 'warning' | 'error' | 'info' | 'success';
+        message: string;
+        severity: 'high' | 'medium' | 'low';
+        action: string;
+      }>;
+      recommendations: string[];
+    };
   };
 }
 
@@ -90,6 +123,16 @@ const DashboardRenderer = ({ dashboardData }: DashboardProps) => {
           </div>
         ))}
       </div>
+
+      {/* Insights Section */}
+      {dashboardData.insights && (
+        <InsightsSection insights={dashboardData.insights} />
+      )}
+
+      {/* Optimization Suggestions */}
+      {dashboardData.optimizationSuggestions && dashboardData.optimizationSuggestions.length > 0 && (
+        <OptimizationSuggestions suggestions={dashboardData.optimizationSuggestions} />
+      )}
 
       {/* Data Tables */}
       {dashboardData.tables.map((table) => (

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Upload, BarChart3, FileSpreadsheet, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,6 +42,37 @@ interface DashboardData {
       pagination: boolean;
       sortable: boolean;
     }>;
+    optimizationSuggestions?: Array<{
+      id: string;
+      title: string;
+      category: 'cost' | 'efficiency' | 'performance' | 'risk' | 'quality';
+      impact: 'high' | 'medium' | 'low';
+      savings: {
+        value: number;
+        unit: string;
+        percentage: string;
+        timeframe: string;
+      };
+      description: string;
+      implementation: string;
+      metrics: string[];
+      priority: 'high' | 'medium' | 'low';
+      confidence: 'high' | 'medium' | 'low';
+      tags: string[];
+      actionable: boolean;
+      color: string;
+    }>;
+    insights?: {
+      summary: string;
+      trends: string[];
+      alerts: Array<{
+        type: 'warning' | 'error' | 'info' | 'success';
+        message: string;
+        severity: 'high' | 'medium' | 'low';
+        action: string;
+      }>;
+      recommendations: string[];
+    };
   };
 }
 
@@ -275,7 +305,108 @@ const Index = () => {
                 pagination: true,
                 sortable: true
               }
-            ]
+            ],
+            optimizationSuggestions: [
+              {
+                id: "opt1",
+                title: "Reduce Non-Productive Time by 15%",
+                category: "efficiency",
+                impact: "high",
+                savings: {
+                  value: 850000,
+                  unit: "$",
+                  percentage: "15%",
+                  timeframe: "annually"
+                },
+                description: "Implementing real-time monitoring and predictive maintenance can reduce NPT significantly.",
+                implementation: "Deploy IoT sensors and analytics platform for predictive maintenance scheduling.",
+                metrics: [
+                  "Current NPT: 12% of total drilling time",
+                  "Target NPT: 8% of total drilling time",
+                  "Expected timeline: 6-9 months"
+                ],
+                priority: "high",
+                confidence: "high",
+                tags: ["drilling", "efficiency", "iot"],
+                actionable: true,
+                color: "#10B981"
+              },
+              {
+                id: "opt2",
+                title: "Optimize Drilling Fluid Costs",
+                category: "cost",
+                impact: "medium",
+                savings: {
+                  value: 320000,
+                  unit: "$",
+                  percentage: "12%",
+                  timeframe: "annually"
+                },
+                description: "Using premium drilling fluids can reduce overall day costs despite higher initial expense.",
+                implementation: "Switch to high-performance drilling fluids for critical drilling phases.",
+                metrics: [
+                  "Current fluid cost efficiency: 75%",
+                  "Target efficiency: 90%",
+                  "Expected timeline: 3-4 months"
+                ],
+                priority: "medium",
+                confidence: "high",
+                tags: ["drilling", "cost-optimization", "materials"],
+                actionable: true,
+                color: "#3B82F6"
+              },
+              {
+                id: "opt3",
+                title: "Casing Design Optimization",
+                category: "performance",
+                impact: "medium",
+                savings: {
+                  value: 500000,
+                  unit: "$",
+                  percentage: "8%",
+                  timeframe: "per project"
+                },
+                description: "Right-sizing casing strings based on formation pressure can reduce material costs.",
+                implementation: "Implement advanced casing design software and formation analysis.",
+                metrics: [
+                  "Current casing utilization: 85%",
+                  "Target utilization: 95%",
+                  "Expected timeline: 2-3 months"
+                ],
+                priority: "medium",
+                confidence: "medium",
+                tags: ["design", "optimization", "materials"],
+                actionable: true,
+                color: "#F59E0B"
+              }
+            ],
+            insights: {
+              summary: "West region leads in DPNG adoption (15.7%), driven by Gujarat and Maharashtra infrastructure development. North-East lags due to infrastructure gaps (2% DPNG). Focus needed on states like UP (5.7%) and Bihar (1.5%).",
+              trends: [
+                "DPNG penetration showing steady growth at 5.8% nationally",
+                "Gujarat shows highest penetration at 39.7% with strong infrastructure",
+                "5 states still have zero DPNG coverage requiring immediate attention"
+              ],
+              alerts: [
+                {
+                  type: "warning",
+                  message: "North-East region DPNG penetration critically low at 2%",
+                  severity: "high",
+                  action: "Prioritize pipeline infrastructure development in North-East states"
+                },
+                {
+                  type: "info",
+                  message: "PMUV connections show strong growth in eastern states",
+                  severity: "medium",
+                  action: "Focus PMUV expansion programs in identified growth regions"
+                }
+              ],
+              recommendations: [
+                "Infrastructure Development: Prioritize pipeline infrastructure in North-East and Eastern states to improve DPNG accessibility",
+                "Policy Implementation: Implement targeted policies to accelerate DPNG adoption in states with low penetration",
+                "Consumer Awareness: Launch awareness campaigns about DPNG benefits in regions with high LPG dependency"
+              ]
+            }
           }
         });
       }, 2000);
