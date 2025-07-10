@@ -23,11 +23,37 @@ interface DashboardProps {
     }>;
     charts: Array<{
       id: string;
-      type: 'line' | 'bar' | 'pie' | 'area' | 'scatter' | 'table';
+      type: 'AreaChart' | 'BarChart' | 'LineChart' | 'ComposedChart' | 'PieChart' | 'RadarChart' | 'RadialBarChart' | 'ScatterChart' | 'FunnelChart' | 'SankeyChart';
       title: string;
       subtitle?: string;
       size: 'full' | 'half' | 'third' | 'quarter';
-      chartConfig: any;
+      chartConfig: {
+        xAxis?: {
+          dataKey: string;
+          label: string;
+          type: 'category' | 'number' | 'time';
+        };
+        yAxis?: {
+          label: string;
+          domain: [string | number, string | number];
+        };
+        series?: Array<{
+          dataKey: string;
+          name: string;
+          type: 'bar' | 'line' | 'area';
+          color?: string;
+          fill?: string;
+          stroke?: string;
+        }>;
+        composedComponents?: Array<{
+          type: 'Bar' | 'Line' | 'Area';
+          dataKey: string;
+          name: string;
+          color?: string;
+          fill?: string;
+          stroke?: string;
+        }>;
+      };
       data: Array<Record<string, any>>;
       insights?: string[];
     }>;
@@ -108,18 +134,7 @@ const DashboardRenderer = ({ dashboardData }: DashboardProps) => {
       <div className="grid grid-cols-12 gap-6">
         {dashboardData.charts.map((chart) => (
           <div key={chart.id} className={getSizeClass(chart.size)}>
-            <ChartRenderer 
-              chartData={{
-                chartConfig: {
-                  type: chart.type as 'bar' | 'line' | 'pie' | 'scatter',
-                  title: chart.title,
-                  xAxis: chart.chartConfig.xAxis,
-                  yAxis: chart.chartConfig.yAxis,
-                  series: chart.chartConfig.series
-                },
-                data: chart.data
-              }}
-            />
+            <ChartRenderer chartData={chart} />
           </div>
         ))}
       </div>

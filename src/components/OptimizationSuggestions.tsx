@@ -74,7 +74,7 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Optimization Opportunities</h2>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {suggestions.map((suggestion) => (
           <Card key={suggestion.id} className="shadow-lg border-0 bg-white/70 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
@@ -92,25 +92,25 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
                   {suggestion.impact.toUpperCase()} IMPACT
                 </Badge>
               </div>
-              
+
               <CardTitle className="text-lg font-semibold text-gray-800 mt-3">
                 {suggestion.title}
               </CardTitle>
-              
+
               <div className="flex items-center space-x-4 text-sm text-gray-600">
                 <span className="capitalize">{suggestion.category}</span>
                 <span>•</span>
                 <span className="font-semibold text-green-600">
-                  Save {suggestion.savings.unit === '$' ? '$' : ''}{suggestion.savings.value.toLocaleString()}{suggestion.savings.unit !== '$' ? suggestion.savings.unit : ''} {suggestion.savings.timeframe}
+                  Save {suggestion.savings.unit === '$' ? '$' : ''}{suggestion.savings.value?.toLocaleString()}{suggestion.savings.unit !== '$' ? suggestion.savings.unit : ''} {suggestion.savings.timeframe}
                 </span>
               </div>
             </CardHeader>
-            
+
             <CardContent className="space-y-4">
               <p className="text-gray-700 text-sm leading-relaxed">
                 {suggestion.description}
               </p>
-              
+
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 text-sm">Key Metrics:</h4>
                 <ul className="space-y-1">
@@ -122,7 +122,7 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
                   ))}
                 </ul>
               </div>
-              
+
               <div className="flex flex-wrap gap-1">
                 {suggestion.tags.map((tag, index) => (
                   <Badge key={index} variant="secondary" className="text-xs">
@@ -130,15 +130,14 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
                   </Badge>
                 ))}
               </div>
-              
+
               <div className="flex items-center justify-between pt-2">
                 <span className="text-sm text-gray-500">
                   Potential: {suggestion.savings.percentage}
                 </span>
-                <span className={`text-sm font-medium ${
-                  suggestion.confidence === 'high' ? 'text-green-600' : 
-                  suggestion.confidence === 'medium' ? 'text-yellow-600' : 'text-red-600'
-                }`}>
+                <span className={`text-sm font-medium ${suggestion.confidence === 'high' ? 'text-green-600' :
+                    suggestion.confidence === 'medium' ? 'text-yellow-600' : 'text-red-600'
+                  }`}>
                   {suggestion.confidence.toUpperCase()} confidence
                 </span>
               </div>
