@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, Minus, DollarSign, Users, Percent, MapPin, Link, UserCheck } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Users, BarChart3, Activity } from 'lucide-react';
 
-interface KPIProps {
+interface KPICardProps {
   kpi: {
     id: string;
     title: string;
@@ -16,63 +15,94 @@ interface KPIProps {
   };
 }
 
-const KPICard = ({ kpi }: KPIProps) => {
+const KPICard = ({ kpi }: KPICardProps) => {
   const getIcon = (iconName: string) => {
-    const iconMap: Record<string, React.ComponentType<any>> = {
-      'dollar-sign': DollarSign,
-      'trending-up': TrendingUp,
-      'users': Users,
-      'percent': Percent,
-      'map-pin': MapPin,
-      'link': Link,
-      'user-check': UserCheck,
-    };
-    
-    const IconComponent = iconMap[iconName] || TrendingUp;
-    return <IconComponent className="h-6 w-6" style={{ color: kpi.color }} />;
+    switch (iconName.toLowerCase()) {
+      case 'dollar':
+      case 'dollarsign':
+        return <DollarSign className="h-6 w-6" />;
+      case 'users':
+        return <Users className="h-6 w-6" />;
+      case 'activity':
+        return <Activity className="h-6 w-6" />;
+      case 'barchart':
+      case 'chart':
+        return <BarChart3 className="h-6 w-6" />;
+      default:
+        return <TrendingUp className="h-6 w-6" />;
+    }
   };
 
   const getChangeIcon = () => {
-    switch (kpi.changeType) {
-      case 'positive':
-        return <TrendingUp className="h-4 w-4 text-green-500" />;
-      case 'negative':
-        return <TrendingDown className="h-4 w-4 text-red-500" />;
-      default:
-        return <Minus className="h-4 w-4 text-gray-500" />;
+    if (kpi.changeType === 'positive') {
+      return <TrendingUp className="h-4 w-4 text-green-400" />;
+    } else if (kpi.changeType === 'negative') {
+      return <TrendingDown className="h-4 w-4 text-red-400" />;
     }
+    return null;
   };
 
   const getChangeColor = () => {
-    switch (kpi.changeType) {
-      case 'positive':
-        return 'text-green-600';
-      case 'negative':
-        return 'text-red-600';
-      default:
-        return 'text-gray-600';
+    if (kpi.changeType === 'positive') {
+      return 'text-green-400';
+    } else if (kpi.changeType === 'negative') {
+      return 'text-red-400';
     }
+    return 'text-slate-400';
+  };
+
+  const formatValue = (value: number, unit: string) => {
+    if (unit === '%') {
+      return `${value}%`;
+    }
+    if (unit === '$' || unit === 'USD') {
+      if (value >= 1000000) {
+        return `$${(value / 1000000).toFixed(1)}M`;
+      } else if (value >= 1000) {
+        return `$${(value / 1000).toFixed(1)}K`;
+      }
+      return `$${value.toFixed(0)}`;
+    }
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    }
+    return value.toString();
   };
 
   return (
-    <Card className="bg-slate-800 text-white border-slate-700 hover:bg-slate-700 transition-all duration-300">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="p-2 rounded-lg" style={{ backgroundColor: `${kpi.color}20` }}>
-            {getIcon(kpi.icon)}
+    <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 group">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-cyan-400/20 to-teal-400/20 rounded-lg flex items-center justify-center group-hover:from-cyan-400/30 group-hover:to-teal-400/30 transition-all duration-300">
+              <div className="text-cyan-400">
+                {getIcon(kpi.icon)}
+              </div>
+            </div>
+            <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full"></div>
           </div>
-          <div className={`flex items-center space-x-1 ${getChangeColor()}`}>
+          <div className="flex items-center space-x-1">
             {getChangeIcon()}
-            <span className="text-sm font-medium">{kpi.change}</span>
+            <span className={`text-sm font-medium ${getChangeColor()}`}>
+              {kpi.change}
+            </span>
           </div>
         </div>
-        
-        <div className="space-y-1">
-          <p className="text-slate-400 text-sm font-medium">{kpi.title}</p>
-          <div className="flex items-baseline space-x-1">
-            <span className="text-2xl font-bold">{kpi.value}</span>
-            {kpi.unit && <span className="text-lg font-semibold text-slate-300">{kpi.unit}</span>}
+
+        <div className="space-y-2">
+          <div className="text-3xl font-bold text-white">
+            {formatValue(kpi.value, kpi.unit)}
           </div>
+          <div className="text-sm text-slate-400 font-medium">
+            {kpi.title}
+          </div>
+        </div>
+
+        {/* Subtle gradient bar at bottom */}
+        <div className="mt-4 h-1 bg-gradient-to-r from-cyan-400/20 to-teal-400/20 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full w-3/4"></div>
         </div>
       </CardContent>
     </Card>

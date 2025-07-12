@@ -121,13 +121,18 @@ function transformData(data: Record<string, any>[]) {
 const ChartRenderer = ({ chartData }: ChartRendererProps) => {
     const { type, title, subtitle, chartConfig, data } = chartData;
 
-    const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#84cc16'];
+    const colors = ['#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#3b82f6', '#f97316', '#84cc16'];
 
     const tooltipStyle = {
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        border: 'none',
+        backgroundColor: '#1e293b',
+        border: '1px solid #475569',
         borderRadius: '8px',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+        color: '#f1f5f9'
+    };
+
+    const legendStyle = {
+        color: '#ffffff'
     };
 
     const renderChart = () => {
@@ -148,19 +153,19 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <AreaChart data={dataval}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                             <XAxis
                                 dataKey={chartConfig.xAxis?.dataKey || 'category'}
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                             />
                             <YAxis
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Area
                                     key={index}
@@ -182,19 +187,19 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={dataval}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                             <XAxis
                                 dataKey={chartConfig.xAxis?.dataKey || 'category'}
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                             />
                             <YAxis
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Bar
                                     key={index}
@@ -213,19 +218,19 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={dataval}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                             <XAxis
                                 dataKey={chartConfig.xAxis?.dataKey || 'category'}
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                             />
                             <YAxis
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Line
                                     key={index}
@@ -246,19 +251,19 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <ComposedChart data={dataval}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                             <XAxis
                                 dataKey={chartConfig.xAxis?.dataKey || 'category'}
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                             />
                             <YAxis
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.composedComponents?.map((component, index) => {
                                 const color = component.color || colors[index % colors.length];
                                 switch (component.type) {
@@ -315,7 +320,18 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                label={({ name, percent, x, y }) => (
+                                    <text
+                                        x={x}
+                                        y={y}
+                                        fill="#ffffff"
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                        fontSize="12"
+                                    >
+                                        {`${name} ${(percent * 100).toFixed(0)}%`}
+                                    </text>
+                                )}
                                 outerRadius={80}
                                 fill="#8884d8"
                                 dataKey="value"
@@ -328,7 +344,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                 ))}
                             </Pie>
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                         </PieChart>
                     </ResponsiveContainer>
                 );
@@ -342,7 +358,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                             <PolarAngleAxis dataKey="subject" />
                             <PolarRadiusAxis />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Radar
                                     key={index}
@@ -363,7 +379,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                     <ResponsiveContainer width="100%" height={300}>
                         <RadialBarChart data={dataval}>
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <RadialBar
                                     key={index}
@@ -381,20 +397,20 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <ScatterChart data={dataval}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                             <XAxis
                                 dataKey={chartConfig.xAxis?.dataKey || 'x'}
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 type={chartConfig.xAxis?.type === 'time' ? 'category' : (chartConfig.xAxis?.type || 'number')}
                             />
                             <YAxis
-                                stroke="#6b7280"
+                                stroke="#94a3b8"
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Legend />
+                            <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Scatter
                                     key={index}
@@ -424,7 +440,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                         fill={entry.color || colors[index % colors.length]}
                                     />
                                 ))}
-                                <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
+                                <LabelList position="right" fill="#ffffff" stroke="none" dataKey="name" />
                             </Funnel>
                         </FunnelChart>
                     </ResponsiveContainer>
@@ -456,7 +472,8 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                 x={isOut ? x - 6 : x + width + 6}
                                 y={y + height / 2}
                                 fontSize="14"
-                                stroke="#333"
+                                fill="#ffffff"
+                                stroke="none"
                             >
                                 {payload.name}
                             </text>
@@ -465,8 +482,9 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                 x={isOut ? x - 6 : x + width + 6}
                                 y={y + height / 2 + 13}
                                 fontSize="12"
-                                stroke="#333"
-                                strokeOpacity="0.5"
+                                fill="#ffffff"
+                                fillOpacity="0.7"
+                                stroke="none"
                             >
                                 {payload.value + "k"}
                             </text>
@@ -494,17 +512,17 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
     };
 
     return (
-        <Card className="shadow-lg border-0 bg-white/70 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 group">
             <CardHeader className="pb-4">
-                <CardTitle className="text-xl font-semibold text-gray-800 text-center">
+                <CardTitle className="text-xl font-semibold text-white text-center">
                     {title}
                 </CardTitle>
                 {subtitle && (
-                    <p className="text-sm text-gray-600 text-center mt-1">{subtitle}</p>
+                    <p className="text-sm text-slate-400 text-center mt-1">{subtitle}</p>
                 )}
             </CardHeader>
             <CardContent className="pt-0">
-                <div className="bg-white rounded-lg p-4">
+                <div className="bg-slate-900/30 rounded-lg p-4 border border-slate-700/50">
                     {renderChart()}
                 </div>
             </CardContent>

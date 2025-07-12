@@ -116,43 +116,53 @@ const DashboardRenderer = ({ dashboardData }: DashboardProps) => {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Dashboard Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">{dashboardData.title}</h1>
-        <p className="text-gray-600 max-w-4xl mx-auto">{dashboardData.description}</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div id="dashboard-content" className="max-w-full mx-auto px-4 py-8 space-y-8">
+        {/* Dashboard Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl font-bold text-white">{dashboardData.title}</h1>
+          <p className="text-slate-400 max-w-4xl mx-auto text-lg">{dashboardData.description}</p>
+        </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {dashboardData.kpis.map((kpi) => (
-          <KPICard key={kpi.id} kpi={kpi} />
-        ))}
-      </div>
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {dashboardData.kpis.map((kpi) => (
+            <KPICard key={kpi.id} kpi={kpi} />
+          ))}
+        </div>
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-12 gap-6">
-        {dashboardData.charts.map((chart) => (
-          <div key={chart.id} className={getSizeClass(chart.size)}>
-            <ChartRenderer chartData={chart} />
+        {/* Charts Grid */}
+        <div className="grid grid-cols-12 gap-6">
+          {dashboardData.charts.map((chart) => (
+            <div key={chart.id} className={getSizeClass(chart.size)}>
+              <ChartRenderer chartData={chart} />
+            </div>
+          ))}
+        </div>
+
+        {/* Insights Section */}
+        {dashboardData.insights && (
+          <InsightsSection insights={dashboardData.insights} />
+        )}
+
+        {/* Optimization Suggestions */}
+        {dashboardData.optimizationSuggestions && dashboardData.optimizationSuggestions.length > 0 && (
+          <OptimizationSuggestions suggestions={dashboardData.optimizationSuggestions} />
+        )}
+
+        {/* Data Tables */}
+        {dashboardData.tables.map((table) => (
+          <div key={table.id} className="space-y-4">
+            <h2 className="text-2xl font-bold text-white flex items-center">
+              <div className="w-6 h-6 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white text-sm">📊</span>
+              </div>
+              Data Tables
+            </h2>
+            <DataTable tableData={table} />
           </div>
         ))}
       </div>
-
-      {/* Insights Section */}
-      {dashboardData.insights && (
-        <InsightsSection insights={dashboardData.insights} />
-      )}
-
-      {/* Optimization Suggestions */}
-      {dashboardData.optimizationSuggestions && dashboardData.optimizationSuggestions.length > 0 && (
-        <OptimizationSuggestions suggestions={dashboardData.optimizationSuggestions} />
-      )}
-
-      {/* Data Tables */}
-      {dashboardData.tables.map((table) => (
-        <DataTable key={table.id} tableData={table} />
-      ))}
     </div>
   );
 };

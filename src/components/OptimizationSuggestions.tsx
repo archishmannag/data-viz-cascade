@@ -48,13 +48,13 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'high':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-500/20 text-red-400 border-red-500/30';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
       case 'low':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-500/20 text-green-400 border-green-500/30';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
     }
   };
 
@@ -67,79 +67,87 @@ const OptimizationSuggestions = ({ suggestions }: OptimizationSuggestionsProps) 
       case 'low':
         return 'bg-green-500';
       default:
-        return 'bg-gray-500';
+        return 'bg-slate-500';
     }
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Optimization Opportunities</h2>
+      <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <div className="w-6 h-6 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full flex items-center justify-center mr-3">
+          <span className="text-white text-sm">🎯</span>
+        </div>
+        Optimization Opportunities
+      </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {suggestions.map((suggestion) => (
-          <Card key={suggestion.id} className="shadow-lg border-0 bg-white/70 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+          <Card key={suggestion.id} className="bg-slate-800/50 border-slate-700 hover:border-cyan-500/50 transition-all duration-300 group backdrop-blur-sm">
             <CardHeader className="pb-4">
               <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-2">
-                  <div className="p-2 rounded-lg" style={{ backgroundColor: `${suggestion.color}20` }}>
-                    <div style={{ color: suggestion.color }}>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-gradient-to-r from-cyan-400/20 to-teal-400/20 group-hover:from-cyan-400/30 group-hover:to-teal-400/30 transition-all duration-300">
+                    <div className="text-cyan-400">
                       {getCategoryIcon(suggestion.category)}
                     </div>
                   </div>
                   <div className={`w-3 h-3 rounded-full ${getPriorityColor(suggestion.priority)}`}></div>
                 </div>
-                <Badge className={getImpactColor(suggestion.impact)}>
-                  {suggestion.impact.toUpperCase()} IMPACT
+                <Badge className={`${getImpactColor(suggestion.impact)} border font-medium`}>
+                  {suggestion.impact.toUpperCase()}
                 </Badge>
               </div>
 
-              <CardTitle className="text-lg font-semibold text-gray-800 mt-3">
+              <CardTitle className="text-lg font-semibold text-white mt-3 group-hover:text-cyan-100 transition-colors">
                 {suggestion.title}
               </CardTitle>
 
-              <div className="flex items-center space-x-4 text-sm text-gray-600">
+              <div className="flex items-center space-x-4 text-sm text-slate-400">
                 <span className="capitalize">{suggestion.category}</span>
-                <span>•</span>
-                <span className="font-semibold text-green-600">
-                  Save {suggestion.savings.unit === '$' ? '$' : ''}{suggestion.savings.value?.toLocaleString()}{suggestion.savings.unit !== '$' ? suggestion.savings.unit : ''} {suggestion.savings.timeframe}
-                </span>
+                <span className="text-slate-600">•</span>
+                <span className="capitalize">{suggestion.confidence} confidence</span>
               </div>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              <p className="text-gray-700 text-sm leading-relaxed">
+            <CardContent className="pt-0">
+              <p className="text-slate-300 mb-4 leading-relaxed">
                 {suggestion.description}
               </p>
 
-              <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 text-sm">Key Metrics:</h4>
-                <ul className="space-y-1">
-                  {suggestion.metrics.map((metric, index) => (
-                    <li key={index} className="text-sm text-gray-600 flex items-start">
-                      <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                      {metric}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {suggestion.metrics.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-slate-200 mb-2">Key Metrics:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {suggestion.metrics.map((metric, index) => (
+                      <Badge key={index} variant="outline" className="text-xs bg-slate-700/50 border-slate-600 text-slate-300">
+                        {metric}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-              <div className="flex flex-wrap gap-1">
-                {suggestion.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
+              {suggestion.tags.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    {suggestion.tags.map((tag, index) => (
+                      <Badge key={index} variant="outline" className="text-xs bg-cyan-500/10 border-cyan-500/30 text-cyan-400">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-sm text-gray-500">
-                  Potential: {suggestion.savings.percentage}
-                </span>
-                <span className={`text-sm font-medium ${suggestion.confidence === 'high' ? 'text-green-600' :
-                    suggestion.confidence === 'medium' ? 'text-yellow-600' : 'text-red-600'
-                  }`}>
-                  {suggestion.confidence.toUpperCase()} confidence
-                </span>
+              <div className="flex items-center justify-between pt-4 border-t border-slate-700">
+                <div className="text-sm text-slate-400">
+                  Potential: <span className="text-green-400 font-medium">{suggestion.savings.percentage}</span>
+                </div>
+                <div className="text-sm text-slate-400">
+                  <span className="text-cyan-400 font-medium">
+                    {suggestion.confidence.toUpperCase()}
+                  </span> confidence
+                </div>
               </div>
             </CardContent>
           </Card>
