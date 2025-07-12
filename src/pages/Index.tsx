@@ -43,7 +43,7 @@ const Index = () => {
                     <div className="flex items-center">
                         <div className="flex items-center space-x-2">
                             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-lg flex items-center justify-center">
-                                <BarChart3 className="h-4 w-4 text-white" />
+                                <BarChart3 className="h-6 w-6 text-white" />
                             </div>
                             <span className="text-2xl font-bold text-white">TransIQ</span>
                         </div>
@@ -110,7 +110,7 @@ const Index = () => {
                     <div className="flex items-center justify-center mb-6">
                         <div className="flex items-center space-x-3">
                             <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl flex items-center justify-center">
-                                <BarChart3 className="h-8 w-8 text-white" />
+                                <BarChart3 className="h-12 w-12 text-white" />
                             </div>
                             <span className="text-3xl font-bold text-white">TransIQ</span>
                         </div>

@@ -128,7 +128,39 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
         border: '1px solid #475569',
         borderRadius: '8px',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
-        color: '#f1f5f9'
+        color: '#f1f5f9',
+        fontSize: '12px',
+        padding: '8px 12px',
+        lineHeight: '1.4'
+    };
+
+    const tooltipLabelStyle = {
+        color: '#f1f5f9',
+        fontWeight: '500'
+    };
+
+    const tooltipItemStyle = {
+        color: '#f1f5f9',
+        fontSize: '12px'
+    };
+
+    // Custom tooltip component to ensure proper styling
+    const CustomTooltip = ({ active, payload, label }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div style={tooltipStyle}>
+                    {label && (
+                        <p style={tooltipLabelStyle}>{`${label}`}</p>
+                    )}
+                    {payload.map((entry: any, index: number) => (
+                        <p key={index} style={{ ...tooltipItemStyle, color: entry.color || '#f1f5f9' }}>
+                            {`${entry.name}: ${entry.value}`}
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+        return null;
     };
 
     const legendStyle = {
@@ -343,7 +375,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                     />
                                 ))}
                             </Pie>
-                            <Tooltip contentStyle={tooltipStyle} />
+                            <Tooltip content={<CustomTooltip />} />
                             <Legend wrapperStyle={legendStyle} />
                         </PieChart>
                     </ResponsiveContainer>
@@ -357,7 +389,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                             <PolarGrid />
                             <PolarAngleAxis dataKey="subject" />
                             <PolarRadiusAxis />
-                            <Tooltip contentStyle={tooltipStyle} />
+                            <Tooltip content={<CustomTooltip />} />
                             <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Radar
@@ -409,7 +441,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                                 fontSize={12}
                                 domain={chartConfig.yAxis?.domain || ['auto', 'auto']}
                             />
-                            <Tooltip contentStyle={tooltipStyle} />
+                            <Tooltip content={<CustomTooltip />} />
                             <Legend wrapperStyle={legendStyle} />
                             {chartConfig.series?.map((series, index) => (
                                 <Scatter
@@ -428,7 +460,7 @@ const ChartRenderer = ({ chartData }: ChartRendererProps) => {
                 return (
                     <ResponsiveContainer width="100%" height={300}>
                         <FunnelChart>
-                            <Tooltip contentStyle={tooltipStyle} />
+                            <Tooltip content={<CustomTooltip />} />
                             <Funnel
                                 dataKey="value"
                                 data={dataval}
